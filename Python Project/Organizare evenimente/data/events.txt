@@ -1,0 +1,6 @@
+11;30/10/2021;Balul bobocilor;La casa de cultura.
+8;17/9/2021;Concert;In centrul vechi. Ora 20:00.
+43;22/11/2021;Street Music Festival;La centru vechi, ora 19:00
+14;12/12/2021;Revelion;Cabana in Somesul Rece.
+17;9/7/2021;Festival;Pe plaja.
+79;18/11/2021;Premiera film Marvel;La cinema Iulius Mall.
