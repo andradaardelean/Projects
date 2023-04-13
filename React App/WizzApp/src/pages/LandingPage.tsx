@@ -1,16 +1,13 @@
-
-import SearchForm from "~/components/SearchForm";
-import NavbarLayout from "~/layouts";
-
-
+import Offers from '~/components/Offers';
+import SearchForm from '~/components/SearchForm';
+import NavbarLayout from '~/layouts';
 
 const LandingPage = () => {
-
   return (
     <NavbarLayout>
-        <SearchForm />
+      <SearchForm />
+      <Offers />
     </NavbarLayout>
-
   );
 };
 

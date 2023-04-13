@@ -1,20 +1,20 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 
-import "./index.css";
+import './index.css';
 //import "antd/dist/reset.css";
-import { BrowserRouter } from "react-router-dom";
-import BaseRoutes from "./BaseRoutes";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { BrowserRouter } from 'react-router-dom';
+import BaseRoutes from './BaseRoutes';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
-const container = document.getElementById("root");
+const container = document.getElementById('root');
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: false,
-    },
-  },
+      retry: false
+    }
+  }
 });
 
 if (!container) {
