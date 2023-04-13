@@ -6,7 +6,6 @@ export interface User{
     password: string
 }
 
-
 export interface Flight{
     id: string,
     departure: string,

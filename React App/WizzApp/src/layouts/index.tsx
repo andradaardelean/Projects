@@ -1,30 +1,60 @@
-import { Row, Col } from "antd";
-import { Footer, Header } from "antd/es/layout/layout";
-import type { FC, PropsWithChildren } from "react";
+import { Row, Col, Button } from 'antd';
+import { Header } from 'antd/es/layout/layout';
+import type { FC, PropsWithChildren } from 'react';
+import { Link } from 'react-router-dom';
 
-interface NavbarLayoutProps { }
+interface NavbarLayoutProps {}
 
 const NavbarLayout: FC<PropsWithChildren<NavbarLayoutProps>> = function ({
-  children,
+  children
 }) {
   const MyHeader = () => {
     return (
       <Header className="header">
-        <div className="logo" />
-        <Row>
-          <Col span={1}><div>
-            <img src="wizz.png" alt="logo" width="200" height="60" ></img>
-          </div></Col>
+        <Row style={{ padding: 5 }}>
+          <Col span={20}>
+            <div>
+              <Link to="/">
+                <img src="wizz.png" alt="logo" width="200" height="60"></img>
+              </Link>
+            </div>
+          </Col>
+          <Col span={4}>
+            <Link to="/signin">
+              <Button
+                type="default"
+                style={{
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                  margin: '0 auto'
+                }}
+              >
+                Sign in
+              </Button>
+            </Link>
+
+            <Link to="/signup">
+              <Button
+                type="default"
+                style={{
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                  marginLeft: 20
+                }}
+              >
+                Sign up
+              </Button>
+            </Link>
+          </Col>
         </Row>
       </Header>
-    )
-  }
+    );
+  };
 
   return (
     <div>
       <MyHeader />
-      <div style={{ marginBottom: "180px" }}>{children}</div>
-      <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
+      <div style={{ marginBottom: '180px' }}>{children}</div>
     </div>
   );
 };

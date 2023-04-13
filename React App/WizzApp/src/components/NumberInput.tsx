@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Input, Tooltip } from 'antd';
 
 interface NumericInputProps {
@@ -19,7 +19,7 @@ const NumericInput = (props: NumericInputProps) => {
       onChange(inputValue);
     }
   };
-  
+
   const handleBlur = () => {
     let valueTemp = value;
     if (value.charAt(value.length - 1) === '.' || value === '-') {
@@ -29,29 +29,30 @@ const NumericInput = (props: NumericInputProps) => {
   };
 
   const title = value ? (
-    <span className="numeric-input-title">{value !== '-' ? formatNumber(Number(value)) : '-'}</span>
+    <span className="numeric-input-title">
+      {value !== '-' ? formatNumber(Number(value)) : '-'}
+    </span>
   ) : (
     'Input a number'
   );
 
   return (
-    <Tooltip trigger={['focus']} title={title} placement="topLeft" overlayClassName="numeric-input">
+    <Tooltip
+      trigger={['focus']}
+      title={title}
+      placement="topLeft"
+      overlayClassName="numeric-input"
+    >
       <Input
         {...props}
         onChange={handleChange}
         onBlur={handleBlur}
         placeholder="PASSENGERS"
         maxLength={16}
-        style={{maxWidth: 600}}
+        style={{ maxWidth: 600 }}
       />
     </Tooltip>
   );
 };
 
-const Passangers: React.FC = () => {
-  const [value, setValue] = useState('');
-
-  return <NumericInput style={{ width: 120 }} value={value} onChange={setValue} />;
-};
-
-export default Passangers;
+export default NumericInput;
