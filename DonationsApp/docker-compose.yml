@@ -1,0 +1,127 @@
+# @format
+
+version: "3"
+services:
+  authservice:
+    build:
+      dockerfile: AuthService/Dockerfile
+    ports:
+      - "12500:12500"
+    environment:
+      BINDING_ADRESS: http://*
+      BINDING_PORT: 12500
+      CONNECTION_STRING: mongodb://mongodb:27017/santa
+      DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
+      OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
+      OTEL_EXPORTER_JAEGER_AGENT_PORT: 6831
+      OTEL_EXPORTER_JAEGER_ENDPOINT: http://jaeger:14268/api/traces
+      JAEGER_SAMPLER_MANAGER_HOST_PORT: jaeger:5778
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 200M
+
+  locationservice:
+    build:
+      dockerfile: LocationService/Dockerfile
+    ports:
+      - "12600:12600"
+    environment:
+      BINDING_ADRESS: http://*
+      BINDING_PORT: 12600
+      CONNECTION_STRING: mongodb://mongodb:27017/santa
+      DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
+      OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
+      OTEL_EXPORTER_JAEGER_AGENT_PORT: 6831
+      OTEL_EXPORTER_JAEGER_ENDPOINT: http://jaeger:14268/api/traces
+      JAEGER_SAMPLER_MANAGER_HOST_PORT: jaeger:5778
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 200M
+
+  donationservice:
+    build:
+      dockerfile: DonationService/Dockerfile
+    ports:
+      - "12700:12700"
+    environment:
+      BINDING_ADRESS: http://*
+      BINDING_PORT: 12700
+      CONNECTION_STRING: mongodb://mongodb:27017/santa
+      DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
+      TASKSERVICE_URL: http://taskservice:12800
+      OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
+      OTEL_EXPORTER_JAEGER_AGENT_PORT: 6831
+      OTEL_EXPORTER_JAEGER_ENDPOINT: http://jaeger:14268/api/traces
+      JAEGER_SAMPLER_MANAGER_HOST_PORT: jaeger:5778
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 200M
+
+  taskservice:
+    build:
+      dockerfile: TaskService/Dockerfile
+    ports:
+      - "12800:12800"
+    environment:
+      BINDING_ADRESS: http://*
+      BINDING_PORT: 12800
+      CONNECTION_STRING: mongodb://mongodb:27017/santa
+      DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
+      DONATIONSERVICE_URL: http://donationservice:12700
+      OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
+      OTEL_EXPORTER_JAEGER_AGENT_PORT: 6831
+      OTEL_EXPORTER_JAEGER_ENDPOINT: http://jaeger:14268/api/traces
+      JAEGER_SAMPLER_MANAGER_HOST_PORT: jaeger:5778
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 200M
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: santa
+    ports:
+      - "27017:27017"
+    volumes:
+      - data-volume:/data/db
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 200M
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.44.0
+    ports:
+      - '16686:16686'
+      - '5775:5775/udp'
+      - '6831:6831/udp'
+      - '6832:6832/udp'
+      - '5778:5778'
+      - '9411:9411'
+  
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    ports:
+      - 8083:8080
+    environment:
+      URLS: "[
+            {name:'AuthService',url:'http://localhost:12500/auth/swagger/v1/auth.json'},
+            {name:'LocationService',url:'http://localhost:12600/location/swagger/v1/location.json'},
+            {name:'DonationService',url:'http://localhost:12700/donation/swagger/v1/donation.json'},
+            {name:'TaskService',url:'http://localhost:12800/task/swagger/v1/task.json'}
+            ]"
+
+volumes:
+  data-volume:
+    name: db-data
